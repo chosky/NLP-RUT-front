@@ -39,25 +39,16 @@ const index = () => {
       try {
         console.log('ENTRE', array);
         let pkg = new FormData();
-        let archivo = new FileReader();
-        // const filelist = new FileList()
         array.archivos_rut.forEach((i) => {
-          console.log('archivos_rut', i, i.name);
           pkg.append('archivos_rut', i, i.name);
         
-          // filelist.item(i)
         });
         console.log('This is the bfd', pkg.getAll('archivos_rut'));
 
-        // fetch('https://nlp-rut-flask-server.herokuapp.com/api/descarga_archivos_url',{
-        //   method:"POST",
-        //   headers:{
-        //     'Content-Type': 'multipart/form-data',
-        //   },
-        //   body: JSON.stringify(array)
-        // })
-
-        // console.log("this is an filelist",filelist);
+        // let arreglodebinarios = new Blob()
+        // arreglodebinarios.
+        // console.log("arreglode binarios", arreglodebinarios);
+        
 
         await axios
           .post(
