@@ -6,50 +6,109 @@ const index = () => {
   const [files, setfiles] = useState([]);
   const [url, seturl] = useState('');
 
-  // axios.post("https://nlp-rut-flask-server.herokuapp.com/api/descarga_archivos", )
+  const array = { archivos_rut: []};
+  const urls = { url_archivos: '' };
 
   useEffect(() => {
-    console.log('thse are the file', files);
-    console.log('thse are the url', url);
-  }, [files,url]);
+    if (files[0] != undefined) {
+      Object.values(files[0]).forEach((file) => {
+        console.log(file);
+        array.archivos_rut.push(file);
+      });
+    }
 
-  // const arrayToSent = (arreglo) => {
-  //   const array = { archivos_rut: [] };
-  // };
+    if (url !== '') {
+      urls.url_archivos = url;
+    }
+  }, [files, url]);
 
-  // const handleNotUrl = () => {
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    if (url !== '') {
+      console.log('VERDAD');
+      try {
+        await axios
+          .post('https://nlp-rut-flask-server.herokuapp.com/api/descarga_archivos_url', urls)
+          .then(function (response) {
+            console.log(response);
+          });
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      try {
+        console.log('ENTRE', array);
+        let pkg = new FormData();
+        let archivo = new FileReader();
+        // const filelist = new FileList()
+        array.archivos_rut.forEach((i) => {
+          console.log('archivos_rut', i, i.name);
+          pkg.append('archivos_rut', i, i.name);
+        
+          // filelist.item(i)
+        });
+        console.log('This is the bfd', pkg.getAll('archivos_rut'));
 
-  // }
+        // fetch('https://nlp-rut-flask-server.herokuapp.com/api/descarga_archivos_url',{
+        //   method:"POST",
+        //   headers:{
+        //     'Content-Type': 'multipart/form-data',
+        //   },
+        //   body: JSON.stringify(array)
+        // })
+
+        // console.log("this is an filelist",filelist);
+
+        await axios
+          .post(
+            'https://nlp-RUT-flask-server.herokuapp.com/api/descarga_archivos',pkg,
+            {
+              headers: {
+                'Content-Type': 'multipart/form-data',
+                'content-type': 'application/json'
+              },
+            }
+          )
+          .then(function (response) {
+            console.log(response);
+          });
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  };
 
   return (
     <>
-      <div className='p-9'>
+      <div className='p-9 flex flex-col'>
         <input
           type='file'
-          className=''
+          className='mb-2'
           multiple
           onChange={(e) => {
             setfiles([...files, e.target.files]);
           }}
-          placeholder='Agregue el documento rut'
+          placeholder='Agregue el documento RUT'
         />
         <input
           type='text'
-          className=''
+          className='border-b-2 border-gray-600 mb-2 p-4'
           onChange={(e) => {
-            let urlData = e.target.value
-            // seturl(urlData.indexOf('http') > -1 ? urlData : '' );
+            let urlData = e.target.value;
             seturl(urlData);
           }}
           value={url}
-          placeholder='Agregue el documento rut'
+          placeholder='Agregue el URL del documento RUT'
         />
-        <button className='ml-3 p-2 rounded-lg  bg-green-600 text-white hover:text-green-800 hover:bg-green-200 hover:border-green-600 hover:border-solid'>
+        <button
+          onClick={onSubmit}
+          className='ml-3 p-2 rounded-lg  bg-green-600 text-white hover:text-green-800 hover:bg-green-200 hover:border-green-600 hover:border-solid'
+        >
           Cargar RUT
         </button>
       </div>
 
-      <div className='grid grid-cols-3 gap-4 p-9'>
+      {/* <div className='grid grid-cols-3 gap-4 p-9'>
         <ItemPainted label='Test' span='testspan' />
         <ItemPainted label='Test' span='testspan' />
         <ItemPainted label='Test' span='testspan' />
@@ -65,7 +124,7 @@ const index = () => {
         <ItemPainted label='Test' span='testspan' />
         <ItemPainted label='Test' span='testspan' />
         <ItemPainted label='Test' span='testspan' />
-      </div>
+      </div> */}
     </>
   );
 };
