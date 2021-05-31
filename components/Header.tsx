@@ -11,7 +11,7 @@ const Header = () => {
           <Link href='/'>Pagina Principal</Link>
         </button>
         <button className='mr-5 rounded-lg text-white bg-azul hover:bg-white hover:text-azul p-2'>
-          Acerca del proyecto
+        <Link href='/project'>Acerca del Proyecto</Link>
         </button>
         <button className='mr-5 rounded-lg text-white bg-azul hover:bg-white hover:text-azul p-2'>
           <Link href='/developers'>Desarrolladores</Link>
