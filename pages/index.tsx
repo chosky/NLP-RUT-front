@@ -63,7 +63,7 @@ const index = () => {
   return (
     <>
       <div className='p-9 flex flex-col'>
-        <input
+        {/* <input
           type='file'
           className='mb-2'
           multiple
@@ -71,7 +71,7 @@ const index = () => {
             setfiles([...files, e.target.files]);
           }}
           placeholder='Agregue el documento RUT'
-        />
+        /> */}
         <input
           type='text'
           className='border-b-2 border-gray-600 mb-2 p-4'
